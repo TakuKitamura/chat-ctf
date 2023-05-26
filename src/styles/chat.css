@@ -1,0 +1,221 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+
+.cs-message__content {
+    min-width: 40px !important;
+    min-height: 35px !important;
+}
+
+.cs-message--incoming .cs-message__content {
+    background: rgb(245, 245, 245) !important;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+}
+
+.cs-message--outgoing .cs-message__content {
+    background: rgb(142, 226, 134) !important;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+}
+
+.me .cs-message__content {
+    background: rgb(142, 226, 134) !important;
+}
+
+.you .cs-message__content {
+    background: rgb(245, 245, 245) !important;
+}
+
+.cs-message-list {
+    background-color: rgb(154, 177, 211) !important;
+}
+
+.cs-message-input__content-editor-wrapper {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.cs-message-input__content-editor {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.cs-message-input__content-editor-wrapper {
+    border-radius: 2em !important;
+}
+
+.cs-avatar>img {
+    border-radius: 0% !important;
+}
+
+
+.cs-message.cs-message--incoming.cs-message--single .cs-message__content {
+    border-radius: 1.5em !important;
+    position: sticky;
+}
+
+
+.cs-message.cs-message--outgoing.cs-message--single .cs-message__content {
+    border-radius: 1.5em !important;
+    position: sticky;
+}
+
+.cs-message.cs-message--incoming.cs-message--single .cs-message__content::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    left: -7px;
+    top: -1px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    transform: rotate(40deg);
+    -webkit-transform: rotate(40deg);
+}
+
+.you.cs-message--single .you.cs-message--single .cs-message__content::before {
+    border-right: 20px solid rgb(245, 245, 245);
+}
+
+.bot.cs-message--single.cs-message--single .cs-message__content::before {
+    border-right: 20px solid rgb(245, 245, 245);
+}
+
+.cs-message.cs-message--outgoing.cs-message--single .cs-message__content::before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    right: -7px;
+    top: -1px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    transform: rotate(140deg);
+    -webkit-transform: rotate(140deg);
+}
+
+.me.cs-message--single .cs-message__content::before {
+    border-right: 20px solid rgb(142, 226, 134);
+}
+
+.you.cs-message--single .cs-message__content::before {
+    border-right: 20px solid rgb(245, 245, 245);
+}
+
+
+.cs-main-container>.cs-sidebar.cs-sidebar--left {
+    /* max-width: 500px !important; */
+}
+
+.selected-item {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.cs-message__avatar {
+    justify-content: flex-start !important;
+    padding-top: 16px !important;
+    pointer-events: none;
+}
+
+.cs-message-list .cs-message.cs-message--outgoing,
+.cs-message-list .cs-message-group.cs-message-group--outgoing {
+    padding-right: 5px !important;
+}
+
+.cs-conversation:hover {
+    background-color: rgb(245, 245, 245) !important;
+}
+
+.cs-message--outgoing .cs-message__sender-name {
+    display: block !important;
+    text-align: right !important;
+}
+
+.cs-message__sender-name {
+    user-select: none;
+}
+
+.cs-message__header {
+    display: block !important;
+}
+
+.to {
+    font-weight: bold;
+    color: rgb(83, 116, 244);
+}
+
+a {
+    color: rgb(83, 116, 244) !important;
+    text-decoration: underline !important;
+}
+
+.firework-container {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: inherit;
+    height: 100%;
+    background: hsla(0, 0%, 10%, 1.00);
+    top: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 0.9;
+}
+
+.firework-message {
+    color: rgb(245, 245, 245);
+    position: absolute;
+    font-size: 5em;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.list {
+    padding: 1em !important;
+    margin: 0 !important
+}
+
+.cs-message__html-content {
+    user-select: none;
+}
+
+img {
+    pointer-events: none;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.error-message {
+    color: rgb(211, 47, 47);
+}
+
+.highlight {
+    color: rgb(211, 47, 47)
+}
+
+.flowing-text {
+    position: absolute;
+    top: 0;
+    white-space: nowrap;
+    font-size: 3em;
+    animation: flow 10s linear infinite;
+    z-index: 100;
+}
+
+
+@keyframes flow {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
