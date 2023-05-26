@@ -19,6 +19,7 @@ $ vim src/.env.production # 適切なものを設定
 SECRET_COOKIE_PASSWORD=cookie-password
 IP=192.168.1.x
 $ cd src
+$ ./setup-db.sh # Admin/Adm1nAdm1n というサンプルアカウントも追加されます。
 $ mkcert 192.168.1.x
 $ cd ..
 $ sudo docker-compose exec app yarn install
