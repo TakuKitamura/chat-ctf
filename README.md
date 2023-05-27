@@ -11,6 +11,7 @@ chatアプリケーション風WebCTFサイト。
 
 ```sh
 $ git clone https://github.com/TakuKitamura/chat-ctf.git
+$ cd chat-ctf
 $ sudo docker-compose up -d
 $ vim src/.env.development # 適切なものを設定
 $ # cookei-passwordについて。https://nextjs.org/docs/basic-features/environment-variables#loading-environment-variables
