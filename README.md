@@ -5,6 +5,7 @@ chatアプリケーション風WebCTFサイト。
 ## 依存
 - docker-compose
 - mkcert
+- sqlite3
 
 ## 起動手順
 
