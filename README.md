@@ -28,7 +28,9 @@ $ # or
 $ sudo docker-compose exec app yarn dev
 ```
 
-https://192.168.1.x にアクセスするとChatCTFのWebサイトが表示されます。
+https://192.168.1.x/login でログインできます。
+
+https://192.168.1.x/signup でアカウント作成できます。
 
 ---
 
