@@ -3,7 +3,7 @@ chatアプリケーション風WebCTFサイト。
 内部ネットワーク内での利用を想定した、セキュリティ教材です。
 
 ## 依存
-- docker
+- docker-compose
 - mkcert
 
 ## 起動手順
