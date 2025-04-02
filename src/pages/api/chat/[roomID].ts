@@ -12,8 +12,6 @@ const escape = require('escape-html');
 const dotenv = require('dotenv')
 const formidable = require("formidable");
 
-let validator = true
-
 export const config = {
   api: {
     bodyParser: false,
@@ -42,12 +40,7 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
       }
     );
 
-    let allChat
-    if (validator) {
-      allChat = await db.all('SELECT message, Chat.userID, User.iconURL FROM Chat LEFT JOIN ( SELECT userID, iconURL FROM User) AS User ON Chat.userID = User.userID  WHERE (roomID = ?) AND ((Chat.userID != "bot") or (Chat.userID = "bot" and sendto = ?))', roomID, userID);
-    } else {
-      allChat = await db.all('SELECT message, Chat.userID, User.iconURL FROM Chat LEFT JOIN ( SELECT userID, iconURL FROM User) AS User ON Chat.userID = User.userID  WHERE (roomID = ?) AND ((Chat.userID != "bot") or (Chat.userID = "bot"))', roomID);
-    }
+    const allChat = await db.all('SELECT message, Chat.userID, User.iconURL FROM Chat LEFT JOIN ( SELECT userID, iconURL FROM User) AS User ON Chat.userID = User.userID  WHERE (roomID = ?) AND ((Chat.userID != "bot") or (Chat.userID = "bot" and sendto = ?))', roomID, userID);
 
     res.json({ "userID": userID, "allChat": allChat });
 
@@ -101,7 +94,7 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
         return
       }
 
-      const result = await botResonse(validator, req, roomID, message, fields.url, file)
+      const result = await botResonse(req, roomID, message, fields.url, file)
 
       if (result === null) {
         res.status(400).json({ "status": "ng" });
@@ -134,11 +127,7 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
 
       await db.all('insert into Chat (userID, sendto, roomID, message) values (?, ?, ?, ?)', 'bot', userID, roomID, botResponse);
 
-      if (validator) {
-        res?.socket?.server?.io?.emit(userID, [{ userID: 'bot', iconURL: '/1f916.png', roomID: roomID, message: botResponse }]);
-      } else {
-        res?.socket?.server?.io?.emit("public_message", [{ userID: 'bot', iconURL: '/1f916.png', roomID: roomID, message: botResponse }]);
-      }
+      res?.socket?.server?.io?.emit(userID, [{ userID: 'bot', iconURL: '/1f916.png', roomID: roomID, message: botResponse }]);
 
       res.status(200).json({ "status": "ok" });
     })

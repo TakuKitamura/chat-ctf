@@ -31,31 +31,31 @@ const validCheckEnv = (message: string, paramsName: string[]) => {
     return { valid: true, params: retParams }
 }
 
-export const botResonse = async (validator: boolean, req: NextApiRequest, roomID: number, message: string, url: string, file: any) => {
+export const botResonse = async (req: NextApiRequest, roomID: number, message: string, url: string, file: any) => {
     if (roomID === 1) {
-        return ctf1(validator, req, message)
+        return ctf1(req, message)
     } else if (roomID === 2) {
         const paramsData = validCheckEnv(message, ['search', 'n'])
         if (paramsData.valid === false) {
             return invalidFormat
         }
-        return await ctf2(validator, { search: paramsData.params.search, n: paramsData.params.n })
+        return await ctf2({ search: paramsData.params.search, n: paramsData.params.n })
     } else if (roomID === 3) {
-        return await ctf3(validator, { message: message, file: file })
+        return await ctf3({ message: message, file: file })
     } else if (roomID === 4) {
         const paramsData = validCheckEnv(message, ['n'])
         if (paramsData.valid === false) {
             return invalidFormat
         }
-        return ctf4(validator, { req: req, n: paramsData.params.n, url: decodeURIComponent(url)})
+        return ctf4({ req: req, n: paramsData.params.n, url: decodeURIComponent(url)})
     }  else if (roomID === 5) {
-        return await ctf5(validator, { message: message, file: file})
+        return await ctf5({ message: message, file: file})
     } else {
         return null
     }
 }
 
-const ctf1 = (validator: boolean, req: NextApiRequest, message: string) => {
+const ctf1 = (req: NextApiRequest, message: string) => {
     const UA = req.headers["user-agent"] || ''
     if (UA.includes('"')) {
         return { gotFlag: true, html: "<h1>正解！</h1>" }
@@ -74,7 +74,7 @@ const ctf1 = (validator: boolean, req: NextApiRequest, message: string) => {
     }
 }
 
-const ctf2 = async (validator: boolean, params: { search: string, n: string }) => {
+const ctf2 = async (params: { search: string, n: string }) => {
     const search = params.search.toLowerCase()
     const n = params.n
 
@@ -120,7 +120,7 @@ const ctf2 = async (validator: boolean, params: { search: string, n: string }) =
     }
 }
 
-const ctf3 = async (validator: boolean, params: { message: string, file: any }) => {
+const ctf3 = async (params: { message: string, file: any }) => {
     if (params.file === undefined) {
         return {
             gotFlag: false,
@@ -155,7 +155,7 @@ const ctf3 = async (validator: boolean, params: { message: string, file: any }) 
     }
 }
 
-const ctf4 = (validator: boolean, params: { req: NextApiRequest, n: string, url: string }) => {
+const ctf4 = (params: { req: NextApiRequest, n: string, url: string }) => {
     if (Number.isInteger(Number(params.n)) === false) {
         return invalidFormat
     }
@@ -188,7 +188,7 @@ const ctf4 = (validator: boolean, params: { req: NextApiRequest, n: string, url:
     }
 }
 
-const ctf5 = async (validator: boolean, params: { message: string, file: any }) => {
+const ctf5 = async (params: { message: string, file: any }) => {
     if (params.file === undefined) {
         return {
             gotFlag: false,
@@ -214,7 +214,7 @@ const ctf5 = async (validator: boolean, params: { message: string, file: any }) 
 
     const xmlData = Buffer.from(sharedStringsData, 'base64').toString()
 
-    if (validator && xmlData.indexOf('<!DOCTYPE') !== -1 && xmlData.indexOf('<!ENTITY') !== -1 && xmlData.indexOf('SYSTEM') !== -1) {
+    if (xmlData.indexOf('<!DOCTYPE') !== -1 && xmlData.indexOf('<!ENTITY') !== -1 && xmlData.indexOf('SYSTEM') !== -1) {
         return { gotFlag: true, html: "<h1>正解！</h1>" }
     }
 
