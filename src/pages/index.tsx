@@ -31,7 +31,6 @@ interface Ctf {
   id: number,
   sortID: number,
   title: string,
-  description: string,
   template: string,
   attachmentButton: string,
   messageInput: string,
@@ -362,7 +361,7 @@ export default function Home() {
 
 " />}
                   <Conversation.Content name={ctf.title
-                  } info={ctf.description} />
+                  } info={i === 0 ? '' : `#${i}`} />
                 </Conversation>
               ))
             }
