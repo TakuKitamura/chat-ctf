@@ -14,12 +14,11 @@ $ git clone https://github.com/TakuKitamura/chat-ctf.git
 $ cd chat-ctf
 $ sudo docker compose up -d
 $ vim src/.env.development # 適切なものを設定。
-$ # cookei-passwordについて。https://nextjs.org/docs/basic-features/environment-variables#loading-environment-variables
 $ # IPは、サーバのIPアドレス
-SECRET_COOKIE_PASSWORD=cookie-password
+SECRET_COOKIE_PASSWORD=xxx # 30文字以上に設定してください
 IP=192.168.1.x
 $ vim src/.env.production # 適切なものを設定
-SECRET_COOKIE_PASSWORD=cookie-password
+SECRET_COOKIE_PASSWORD=xxx # 30文字以上に設定してください
 IP=192.168.1.x
 $ cd src
 $ ./setup-db.sh # Admin/Adm1nAdm1n というテストアカウントも追加されます。
