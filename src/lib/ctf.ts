@@ -6,8 +6,7 @@ import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 const fs = require("fs");
 const JSZip = require('jszip');
-const libxmljs = require('libxmljs')
-
+import { XMLParser } from 'fast-xml-parser';
 
 const jimp = require('jimp');
 
@@ -219,24 +218,33 @@ const ctf5 = async (validator: boolean, params: { message: string, file: any }) 
         return { gotFlag: true, html: "<h1>正解！</h1>" }
     }
 
-    const doc = await libxmljs.parseXml(xmlData, { noent: true });
-    const namespaces = {
-        sst: 'http://schemas.openxmlformats.org/spreadsheetml/2006/main',
+    const parser = new XMLParser();
+    const jsonObj = parser.parse(xmlData);
+
+    type SharedStringItem = {
+        t: string;
     };
 
-    const sstNode = doc.get('//sst:sst', namespaces);
-    const count = sstNode.getAttribute('count').value()
+    type SST = {
+        si: SharedStringItem[] | SharedStringItem;
+        count?: string;
+        uniqueCount?: string;
+        xmlns?: string;
+    };
 
-    const tTags = doc.find('//sst:t', namespaces);
+    const sst: SST = jsonObj.sst;
 
-    const values = tTags.map((tag: any) => tag.text());
+    const uniqueCount = sst.uniqueCount || (Array.isArray(sst.si) ? sst.si.length : 1);
 
-    let html = `Excelを解析した結果、以下のユニークな文字列が${escape(count)}つ含まれているようです。<ul>`
-    for (let i = 0; i < values.length; i++) {
-        const element = values[i];
-        html += `<li>${escape(element)}</li>`
+    const siArray: SharedStringItem[] = Array.isArray(sst.si) ? sst.si : [sst.si];
+
+    const values = siArray.map((si) => si.t);
+
+    let html = `Excelを解析した結果、以下のユニークな文字列が${escape(uniqueCount)}つ含まれているようです。<ul>`;
+    for (const element of values) {
+        html += `<li>${escape(element)}</li>`;
     }
-    html += '</ul>'
+    html += '</ul>';
     return {
         gotFlag: false,
         html: html
