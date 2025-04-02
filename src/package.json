@@ -25,7 +25,6 @@
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.4",
     "fast-xml-parser": "5.0.9",
-    "fireworks-js": "^2.10.1",
     "formidable": "^2.1.1",
     "iron-session": "latest",
     "jimp": "^0.22.8",

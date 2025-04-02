@@ -12,7 +12,6 @@ import {
   Conversation,
   Avatar,
 } from "@chatscope/chat-ui-kit-react";
-import { Fireworks } from 'fireworks-js'
 
 const escape = require('escape-html');
 

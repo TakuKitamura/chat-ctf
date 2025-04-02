@@ -2202,11 +2202,6 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
-fireworks-js@^2.10.1:
-  version "2.10.4"
-  resolved "https://registry.yarnpkg.com/fireworks-js/-/fireworks-js-2.10.4.tgz#d5fda575d7e78eab3eb684df86229e461019a9a6"
-  integrity sha512-6mgBqS6wQUuIt68jXHnm60Lgm3TBS+CUS9QV5t3AH5VqDWcxCZoNErcXmW8uRji4iKwPxzquHy5RZURPvLqBIQ==
-
 flat-cache@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/flat-cache/-/flat-cache-3.0.4.tgz#61b0338302b2fe9f957dcc32fc2a87f1c3048b11"
