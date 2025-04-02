@@ -206,6 +206,7 @@ export default function Home() {
     ];
   
 
+  //  Code adapted from Stack Overflow: https://stackoverflow.com/a/2450976
   function shuffle(array: string[]) {
     let currentIndex = array.length;
   
