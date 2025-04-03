@@ -130,3 +130,114 @@ $ zip -r crafted.xlsx '[Content_Types].xml' _rels xl
 そして、crafted.xlsxをアップロードする。
 
 </details>
+
+# Bot問題追加ガイド
+
+チャット形式CTFの各問題を `src/lib/bots/bot<number>.ts` の形式で実装しています。  
+新しい問題を追加する際は、以下のルールに従ってください。
+
+## 1. ファイル命名規則
+
+- ファイル名は `bot1.ts`, `bot2.ts`, `bot3.ts` のように連番で命名します。
+- 重複しない番号を使用してください。
+- ファイル内のロジックで、問題に正解した場合は `gotFlag: true` を返すようにしてください。
+
+## 2. Bot関数の構成
+
+すべての Bot ファイルは、以下のように `default export` される `async` 関数を定義します。
+
+```ts
+import { BotHandlerArgs } from './types';
+const escape = require('escape-html');
+
+export default async function ({
+  req,
+  message,
+  file
+}: BotHandlerArgs) {
+  return {
+    gotFlag: false,
+    html: escape("出力メッセージ")
+  };
+}
+```
+
+戻り値の構造：
+
+```ts
+{
+  gotFlag: boolean, // 正解時 true、不正解時 false
+  html: string      // 表示するHTML文字列（ユーザ由来の入力は、escape必須）
+}
+```
+
+## 3. 入力とユーティリティ関数
+
+### BotHandlerArgs
+
+すべての Bot は以下の引数を受け取ります：
+
+- `req: NextApiRequest` - HTTPリクエストオブジェクト
+  - https://www.jsdocs.io/package/next#NextApiRequest
+- `message: string` - ユーザが送信したメッセージ
+- `file: File` - ファイル情報（ファイルがアップロードされていなければ、undefined）
+  - https://www.jsdocs.io/package/@types/formidable#File
+
+### validCheckEnv の使い方
+
+クエリ形式の `message` をパース・バリデーションする際には、共通ユーティリティ `validCheckEnv()` を使ってください。
+
+```ts
+import { validCheckEnv } from 'lib/ctf';
+
+const result = validCheckEnv(message, ['key1', 'key2']);
+
+if (!result.valid) {
+  return {
+    gotFlag: false,
+    html: '<h3>Invalid Format</h3>'
+  };
+}
+
+const key1 = result.params.key1;
+const key2 = result.params.key2;
+```
+
+この関数は以下の形式のメッセージをパースします：
+
+```
+key1=value1&key2=value2
+```
+
+指定されたキーがすべて存在するかをチェックし、不正な形式であれば `valid: false` を返します。
+
+## 4. Ctfテーブルへの登録
+
+Bot を追加したら、対応するエントリを `Ctf` テーブルに追加してください。
+
+### 対象ファイル
+
+- `src/migrations/003-ctf.sql` を編集します。
+
+### レコード追加形式
+
+```sql
+INSERT INTO Ctf (id, title, template, attachmentButton)
+VALUES (<bot番号>, '<問題タイトル>', '<初期入力テンプレート>', <true|false>);
+```
+
+- `id`: `bot<number>.ts` の `<number>` と一致させること。
+- `title`: チャットUIに表示される問題名。
+- `template`: 入力フォームに事前表示される文字列（HTML可）。
+- `attachmentButton`: ファイルアップロード用ボタンを表示するかどうか（`true` または `false`）。
+
+### 反映方法
+
+編集後は必ず、以下のスクリプトを実行してDBを再セットアップしてください：
+
+```bash
+$ cd src
+$ ./setup-db.sh
+```
+
+これにより、CTF UI に新しい Bot が表示されます。
