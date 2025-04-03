@@ -5,8 +5,7 @@ import { open } from 'sqlite';
 
 import { withIronSessionApiRoute } from 'iron-session/next'
 import { sessionOptions } from 'lib/session'
-import { botResonse } from 'lib/ctf'
-import { Files } from "formidable";
+import { botResponse } from 'lib/ctf'
 
 const escape = require('escape-html');
 const dotenv = require('dotenv')
@@ -94,7 +93,7 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
         return
       }
 
-      const result = await botResonse(req, roomID, message, fields.url, file)
+      const result = await botResponse(req, roomID, message, file)
 
       if (result === null) {
         res.status(400).json({ "status": "ng" });
@@ -119,15 +118,13 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
         return
       }
 
-      const botResponse = result.html
-
       await db.all('insert into Chat (userID, sendto, roomID, message) values (?, ?, ?, ?)', userID, userID, roomID, message);
 
       res?.socket?.server?.io?.emit("public_message", [{ userID: userID, iconURL: iconURL, roomID: roomID, message: message }]); // file
 
-      await db.all('insert into Chat (userID, sendto, roomID, message) values (?, ?, ?, ?)', 'bot', userID, roomID, botResponse);
+      await db.all('insert into Chat (userID, sendto, roomID, message) values (?, ?, ?, ?)', 'bot', userID, roomID, result.html);
 
-      res?.socket?.server?.io?.emit(userID, [{ userID: 'bot', iconURL: '/1f916.png', roomID: roomID, message: botResponse }]);
+      res?.socket?.server?.io?.emit(userID, [{ userID: 'bot', iconURL: '/1f916.png', roomID: roomID, message: result.html }]);
 
       res.status(200).json({ "status": "ok" });
     })
