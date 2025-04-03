@@ -20,7 +20,7 @@ export default async function ({
 
     const mimetype = file.mimetype
 
-    const originalFileName = file.originalFilename
+    const originalFileName = file.originalFilename || ''
 
     if (mimetype != 'image/jpeg' && mimetype != 'image/png') {
         return { gotFlag: false, html: `${escape(originalFileName)} is not jpeg or png` }
