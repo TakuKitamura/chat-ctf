@@ -47,8 +47,6 @@ $ ./add-users.sh -f /tmp/user.csv -i 192.168.1.x
 ### Adminアカウント専用機能
 - Adminアカウント(`Admin/Adm1nAdm1n`)でログインし、適当なテキストボックスで`/reset-chat`と入力するとchatデータがDBから削除される。画面更新をすると、chat履歴が消えていることを確認できる。
 
----
-
 <details>
 
 <summary>問題の回答</summary>
@@ -130,6 +128,8 @@ $ zip -r crafted.xlsx '[Content_Types].xml' _rels xl
 そして、crafted.xlsxをアップロードする。
 
 </details>
+
+---
 
 # Bot問題追加ガイド
 
