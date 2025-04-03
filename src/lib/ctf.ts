@@ -1,5 +1,6 @@
 
 import { NextApiRequest } from "next";
+import type { File } from "formidable";
 const dotenv = require('dotenv')
 
 export const validCheckEnv = (message: string, paramsName: string[]) => {
@@ -25,7 +26,7 @@ export const botResponse = async (
     req: NextApiRequest,
     roomID: number,
     message: string,
-    file: any
+    file: File
 ) => {
     try {
         const botHandler = (await import(`./bots/bot${roomID}`)).default;

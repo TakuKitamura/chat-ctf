@@ -7,9 +7,11 @@ import { withIronSessionApiRoute } from 'iron-session/next'
 import { sessionOptions } from 'lib/session'
 import { botResponse } from 'lib/ctf'
 
+import type { Fields, Files, File } from "formidable";
+import formidable, { IncomingForm } from "formidable";
+
 const escape = require('escape-html');
 const dotenv = require('dotenv')
-const formidable = require("formidable");
 
 export const config = {
   api: {
@@ -60,7 +62,7 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
     };
 
     const form = new formidable.IncomingForm(options);
-    await form.parse(req, async function (err: Error, fields: { message: string, url: string }, files: any) {
+    await form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
       const isFile = isEmpty(fields)
       if (userID === 'Admin' && isFile === false) {
         if (fields.message === '/reset-chat') {
@@ -81,6 +83,11 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
 
       const file = files.File
       if (err) {
+        res.status(400).json({ "status": "ng" });
+        return
+      }
+
+      if (Array.isArray(file)) {
         res.status(400).json({ "status": "ng" });
         return
       }
