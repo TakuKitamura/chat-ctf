@@ -29,11 +29,9 @@ interface ChatRoom {
 
 interface Ctf {
   id: number,
-  sortID: number,
   title: string,
   template: string,
   attachmentButton: string,
-  messageInput: string,
 }
 
 export default function Home() {
@@ -108,14 +106,14 @@ export default function Home() {
       }
     })
     const ctfData: Ctf[] = await await resp.json();
-    ctfData.sort((a, b) => a.sortID - b.sortID)
+    ctfData.sort((a, b) => a.id - b.id)
     setCtf(ctfData)
 
     let initRoom = []
     // [{ roomID: 0, chatMessage: [] }, { roomID: 1, chatMessage: [] }]
     for (let i = 0; i < ctfData.length; i++) {
       const element = ctfData[i];
-      initRoom.push({ roomID: element.sortID, chatMessage: [] })
+      initRoom.push({ roomID: element.id, chatMessage: [] })
     }
 
     setChatRoom(initRoom)
@@ -131,8 +129,8 @@ export default function Home() {
   useEffect(() => {
     for (let i = 0; i < ctf.length; i++) {
       const element = ctf[i];
-      if (element.sortID >= 1) {
-        initChat(element.sortID)
+      if (element.id >= 1) {
+        initChat(element.id)
       }
     }
   }, [chatRoom.length > 0])
@@ -356,8 +354,8 @@ export default function Home() {
           <ConversationList>
             {
               ctf.map((ctf: Ctf, i: number) => (
-                <Conversation key={ctf.sortID} className={roomID == ctf.sortID ? "selected-item" : ""} onClick={() => { changeRoom(ctf.sortID) }}>
-                  {ctf.sortID !== 0 ? <Avatar src="/1f6a9.png" /> : <Avatar src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+                <Conversation key={ctf.id} className={roomID == ctf.id ? "selected-item" : ""} onClick={() => { changeRoom(ctf.id) }}>
+                  {ctf.id !== 0 ? <Avatar src="/1f6a9.png" /> : <Avatar src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 
 " />}
                   <Conversation.Content name={ctf.title
