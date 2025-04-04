@@ -141,90 +141,68 @@ export default function Home() {
       return
     }
 
-
-    const animeText = (pos: number, text:string, main: boolean) => {
+    const showFloatingComment = (text: string, topOffset = 150, fontSize = '2em') => {
       const container = document.getElementById('container');
-      if (!container) {
-        return
-      }
+      if (!container) return;
 
       const div = document.createElement('div');
-      div.className = 'flowing-text';
-      div.style.width = '100%'
+      div.className = 'floating-comment';
       div.textContent = text;
-      div.style.top = pos + 'px';
-      div.style.left = Math.random() * 500 + 'px';
-      div.style.color = "rgb(" + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ", " + (~~(256 * Math.random())) + ")" ;
-      if (main) {
-        div.style.fontSize = '6em'
-      }
+      div.style.top = `${topOffset + Math.random() * 30}px`;
+      div.style.fontSize = fontSize;
+
       container.appendChild(div);
-  
+
       setTimeout(() => {
         container.removeChild(div);
-        setGotFlag("")
-      }, 10000);
-    }
+      }, 5000);
+    };
 
-    animeText(0, gotFlagMessage, true)
+    showFloatingComment(gotFlagMessage, 100, '3em');
 
+    // by ChatGPT
     const praiseComments = [
-      "めっちゃいいね！",
-      "最高だね！",
-      "感動したわ！(T_T)",
-      "これだよこれ！(*^_^*)",
-      "天才かよｗｗ",
-      "素敵すぎｗ＼(^o^)／",
-      "完璧すぎるｗｗ",
-      "すごいなー！(｀・ω・´)",
-      "プロっぽい！Σ(ﾟДﾟ)",
-      "感激したｗ(*´ω｀*)",
-      "圧倒されたｗｗ(ﾟдﾟ)！",
-      "超面白いｗｗ(≧▽≦)",
-      "素晴らしいねｗ(*^_^*)",
-      "天才的すぎるｗｗ(^O^)",
-      "完璧だねｗｗ(●´ω｀●)",
-      "心に響いたｗ(；д；)",
-      "技術がすごい！(*´Д｀)",
-      "感動の連続ｗ(´；ω；`)",
-      "夢みたいｗ(｡･ω･｡)",
-      "センスがいいｗ(*^^)v",
-      "アイデアが天才的ｗｗ(゜o゜)",
-      "やばすぎるｗｗ(・∀・)",
-      "完璧かよｗｗ(・ω・)",
-      "素晴らしいｗ(≧▽≦)",
-      "神の申し子かｗｗ(*´▽｀*)",
-      "超好きｗ(*ﾟ∀ﾟ*)",
-      "これはヤバいｗ( ´∀｀)",
-      "最高すぎｗｗ(ﾟ∀ﾟ)",
-      "やるじゃん！(｀・ω・´)ｂ",
-      "素晴らしい出来ｗ( ´ ▽ ` )ﾉ"
+      "感動したわ〜ほんま、泣けるで(T_T)🍶",
+      "え、推せる！超推せるんだけど🥰💖",
+      "完璧すぎてウケるｗｗ😎💯ほんと神じゃん！",
+      "推し認定〜！💖これは恋💘",
+      "涙が出るほど感動したぞ…(T_T) 長生きして良かった🙏",
+      "圧倒的じゃないか…貴様、覚醒したな？🦇💥",
+      "お〜見事見事👏たいした腕前やなあ！🔧",
+      "しぬｗｗｗやばいｗｗｗ😂💥",
+      "やっば～ｗ 超イケてるｗｗ🤣💫",
+      "100点満点中120点💯💯",
+      "連続で感動を与えるとは…魔王か？😱🖤",
+      "ワシ、今日これ見て帰るわｗ😂🍵",
+      "おお〜これやこれ！こういうのが欲しかってん！👍",
+      "完璧じゃ…我が知識の範疇を超えておる🧠",
+      "この一撃…完全なる闇のアルティメット⚡️🕶",
+      "好き！それしか言えんｗ🥹💓",
+      "やばすぎｗｗ🤣🔥マジ尊敬なんだけど〜！",
+      "涙すら枯れるほどの感動…(；д；)🌌",
+      "やるぅ〜！スゴっ！マジびびった〜😳💖",
+      "これは幻か…いや、夢を超えた真実だ…😵‍💫🌘",
+      "ちょ、天才すぎない？🤯💡",
+      "やるじゃ〜ん！(｀・ω・´)ｂ💪",
+      "センス良すぎ〜💅✨映え〜ｗ",
+      "この技術…神域ッ！🔥",
+      "は？完璧じゃん？？👏💯",
+      "お主…まさか天才だったとは…ｗｗ🦉",
+      "ふ…センスが爆発しておるな…💣✨",
+      "神ってるんだけどｗｗ🙌💫",
+      "それな？えぐすぎｗｗ😎🔥",
+      "天才ちゃうかマジでｗｗ😲"
     ];
-  
 
-  //  Code adapted from Stack Overflow: https://stackoverflow.com/a/2450976
-  function shuffle(array: string[]) {
-    let currentIndex = array.length;
+    const shuffled = praiseComments.sort(() => 0.5 - Math.random());
+    const topStart = 200;
   
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
-  
-      // Pick a remaining element...
-      let randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-  
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        showFloatingComment(shuffled[i], topStart + i * 60, '1.5em');
+      }, 300 * i);
     }
-  }
-    
-
-  shuffle(praiseComments)
-  for (let i = 0; i < 5; i++) {
-    animeText((i + 1) * 100, praiseComments[i], false);
-  }
-
+    setTimeout(() => setGotFlag(""), 5000);
   }, [gotFlagMessage])
 
   useEffect((): any => {
