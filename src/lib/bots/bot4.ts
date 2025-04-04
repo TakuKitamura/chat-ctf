@@ -4,7 +4,7 @@ const escape = require('escape-html');
 const invalidFormat = { gotFlag: false, html: '<h3>Invalid Format</h3>' };
 const invalidReferer = { gotFlag: false, html: '<h3>Invalid Referer</h3>' };
 
-export default async function ({
+export default async function bot({
     req,
     message,
     file

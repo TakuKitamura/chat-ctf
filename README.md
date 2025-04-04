@@ -150,7 +150,7 @@ $ zip -r crafted.xlsx '[Content_Types].xml' _rels xl
 import { BotHandlerArgs } from './types';
 const escape = require('escape-html');
 
-export default async function ({
+export default async function bot({
   req,
   message,
   file

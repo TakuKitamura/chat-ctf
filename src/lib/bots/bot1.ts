@@ -1,7 +1,7 @@
 const escape = require('escape-html');
 import { BotHandlerArgs } from './types';
 
-export default async function ({
+export default async function bot({
     req,
     message,
     file

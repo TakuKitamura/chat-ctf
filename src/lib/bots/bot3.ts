@@ -2,7 +2,7 @@ import { BotHandlerArgs } from './types';
 const escape = require('escape-html');
 const { Jimp } = require("jimp");
 
-export default async function ({
+export default async function bot({
     req,
     message,
     file

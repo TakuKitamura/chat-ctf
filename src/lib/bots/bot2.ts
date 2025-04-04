@@ -5,7 +5,7 @@ import { BotHandlerArgs } from './types';
 const escape = require('escape-html');
 const invalidFormat = { gotFlag: false, html: '<h3>Invalid Format</h3>' };
 
-export default async function ({
+export default async function bot({
     req,
     message,
     file

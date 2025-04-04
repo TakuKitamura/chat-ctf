@@ -4,7 +4,7 @@ const escape = require('escape-html');
 const fs = require("fs");
 const JSZip = require('jszip');
 
-export default async function ({
+export default async function bot({
     req,
     message,
     file
