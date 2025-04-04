@@ -15,9 +15,6 @@ import InputAdornment from "@mui/material/InputAdornment"
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-
-const escape = require('escape-html');
-
 export default function Login() {
 
     const [userID, setUserID] = useState('');
@@ -28,11 +25,7 @@ export default function Login() {
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
-
-    // const inputRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState("");
-
-    const emptyImage = '/1f600.png'
 
     const login = async () => {
         const resp = await fetch(`/api/login`, {
@@ -56,6 +49,12 @@ export default function Login() {
 
     }
 
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            login();
+        }
+    };
+
     return (
         <Box m={2} pt={3}>
             <Container maxWidth="md">
@@ -64,7 +63,7 @@ export default function Login() {
                         <TextField id="user-id" label="User ID" variant="standard" onChange={(event) => {
                             const input = event.target.value
                             setUserID(input)
-                        }} />
+                        }} onKeyDown={handleKeyDown}/>
                         <TextField type={showPassword ? "text" : "password"} id="password" label="Password"
                             variant="standard" InputProps={{
                                 endAdornment: (
@@ -81,7 +80,7 @@ export default function Login() {
                             }} onChange={(event) => {
                                 const input = event.target.value
                                 setPassword(input)
-                            }} />
+                            }} onKeyDown={handleKeyDown}/>
                     </FormGroup>
                     <span className="error-message">{errorMessage}</span>
                     <Button onClick={() => login()} variant="contained">Login</Button>
