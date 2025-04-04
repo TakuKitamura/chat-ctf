@@ -12,7 +12,7 @@ chatアプリケーション風WebCTFサイト。
 ```sh
 $ git clone https://github.com/TakuKitamura/chat-ctf.git
 $ cd chat-ctf
-$ sudo docker compose up -d
+$ sudo docker compose up -d # サーバを停止する場合は、$ sudo docker compose down
 $ vim src/.env.development # 適切なものを設定。
 $ # IPは、サーバのIPアドレス
 SECRET_COOKIE_PASSWORD=xxx # 30文字以上に設定してください
