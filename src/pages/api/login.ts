@@ -6,8 +6,8 @@ import { open } from 'sqlite';
 const escape = require('escape-html');
 const dotenv = require('dotenv')
 
-import { withIronSessionApiRoute } from 'iron-session/next'
-import { sessionOptions } from '../../lib/session'
+import { getIronSession } from 'iron-session'
+import { sessionOptions, IronSessionData } from 'lib/session'
 import { NextApiRequest, NextApiResponse } from 'next'
 const bcrypt = require("bcrypt")
 
@@ -44,8 +44,9 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
         const validPassword = await comparePassword(password, String(countUser[0]['password']))
         if (validPassword) {
             const user = { userID: userID, iconURL: String(countUser[0]['iconURL']) }
-            req.session.user = user
-            await req.session.save()
+            const session = await getIronSession<IronSessionData>(req, res, sessionOptions);
+            session.user = user
+            await session.save()
             res.status(200).json({ "message": "ok" });
             return
         } else {
@@ -55,4 +56,4 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     }
 };
 
-export default withIronSessionApiRoute(loginRoute, sessionOptions)
+export default loginRoute;

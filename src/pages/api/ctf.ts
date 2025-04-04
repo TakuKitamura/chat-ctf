@@ -3,7 +3,7 @@ import { NextApiResponseServerIO } from "types/next";
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 
-import { withIronSessionApiRoute } from 'iron-session/next'
+import { getIronSession } from 'iron-session'
 import { sessionOptions } from 'lib/session'
 
 async function ctfRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
@@ -20,4 +20,5 @@ async function ctfRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
     res.json(ctf);
   }
 };
-export default withIronSessionApiRoute(ctfRoute as NextApiHandler, sessionOptions)
+
+export default ctfRoute;

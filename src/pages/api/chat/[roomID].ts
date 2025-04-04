@@ -3,12 +3,13 @@ import { NextApiResponseServerIO } from "types/next";
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 
-import { withIronSessionApiRoute } from 'iron-session/next'
-import { sessionOptions } from 'lib/session'
+import { getIronSession } from 'iron-session';
+import { sessionOptions, IronSessionData } from 'lib/session'
 import { botResponse } from 'lib/ctf'
 
-import type { Fields, Files, File } from "formidable";
+import { Fields, Files, File } from "formidable";
 import formidable, { IncomingForm } from "formidable";
+import { file } from "jszip";
 
 const escape = require('escape-html');
 const dotenv = require('dotenv')
@@ -20,8 +21,9 @@ export const config = {
 };
 
 async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
-  const userID = req.session.user.userID
-  const iconURL = req.session.user.iconURL
+  const session = await getIronSession<IronSessionData>(req, res, sessionOptions);
+  const userID = session.user.userID
+  const iconURL = session.user.iconURL
   let roomID: number = Number(req.query.roomID)
 
   if (Number.isInteger(roomID) && roomID > 0) {
@@ -61,11 +63,17 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
       maxFileSize: 1024 * 1024 // 1MB,
     };
 
-    const form = new formidable.IncomingForm(options);
+    const form = formidable(options);
     await form.parse(req, async (err: Error | null, fields: Fields, files: Files) => {
-      const isFile = isEmpty(fields)
-      if (userID === 'Admin' && isFile === false) {
-        if (fields.message === '/reset-chat') {
+      if (err) {
+        console.error('Form Parse Error')
+        res.status(400).json({ "status": "ng" });
+        return
+      }
+
+      if (userID === 'Admin' && files.File === undefined) {
+        if (fields.message &&
+            (fields.message as unknown as string) === '/reset-chat') {
           const db = await open(
             {
               filename: './mydb.sqlite',
@@ -81,26 +89,27 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
         }
       }
 
-      const file = files.File
-      if (err) {
-        res.status(400).json({ "status": "ng" });
-        return
-      }
-
-      if (Array.isArray(file)) {
+      if (files.File !== undefined && files.File.length !== 1) {
+        console.error('FileList length is not 1')
         res.status(400).json({ "status": "ng" });
         return
       }
 
       // get message
-      const message = isFile ? `📁 ${file.originalFilename}\nMime Type: ${file.mimetype}\nSize: ${file.size} bytes` : String(fields.message)
+      let message = ''
+      if (files.File !== undefined) {
+        const oneFile = files.File[0]
+        message = `📁 ${oneFile.originalFilename}\nMime Type: ${oneFile.mimetype}\nSize: ${oneFile.size} bytes`
+      } else {
+        message = String(fields.message)
+      }
 
       if (message.length > 1000) {
         res.status(400).json({ "status": "ng" });
         return
       }
 
-      const result = await botResponse(req, roomID, message, file)
+      const result = await botResponse(req, roomID, message, files.File ? files.File[0] : undefined)
 
       if (result === null) {
         res.status(400).json({ "status": "ng" });
@@ -137,4 +146,4 @@ async function chatRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
     })
   }
 };
-export default withIronSessionApiRoute(chatRoute as NextApiHandler, sessionOptions)
+export default chatRoute;

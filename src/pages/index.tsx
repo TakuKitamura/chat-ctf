@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import SocketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   MainContainer,
@@ -232,8 +232,8 @@ export default function Home() {
     if (userID === "") {
       return
     }
-    const socket = SocketIOClient.connect({
-      path: "/api/socketio",
+    const socket = io({
+      path: "/api/socketio"
     });
 
     socket.on("public_message", async (chatMessage: ChatMessage[]) => {
@@ -326,7 +326,7 @@ export default function Home() {
     }
   };
 
-  const msgListRef = useRef() as React.MutableRefObject<any>;
+  const msgListRef = useRef<any>(null);
 
   const changeHandler = async (event: any) => {
 

@@ -1,13 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-// import { NextApiResponseServerIO } from "types/next";
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 
-import { withIronSessionApiRoute } from 'iron-session/next'
-import { sessionOptions } from '../../lib/session'
-
-const escape = require('escape-html');
-const dotenv = require('dotenv')
 const bcrypt = require("bcrypt")
 
 async function hashPassword(plaintextPassword:string) {
@@ -15,7 +9,7 @@ async function hashPassword(plaintextPassword:string) {
     return hash
 }
 
-async function signupRoute(req: NextApiRequest, res: NextApiResponse) {
+export default async function signupRoute(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
         const signUpData = req.body;
 
@@ -74,5 +68,3 @@ async function signupRoute(req: NextApiRequest, res: NextApiResponse) {
         res.status(200).json({ "message": "ok" });
     }
 };
-
-export default withIronSessionApiRoute(signupRoute, sessionOptions)

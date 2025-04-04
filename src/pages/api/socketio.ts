@@ -4,10 +4,6 @@ import { NextApiResponseServerIO } from "../../types/next";
 import { Server as ServerIO } from "socket.io";
 import { Server as NetServer } from "http";
 
-import { withIronSessionApiRoute } from 'iron-session/next'
-import { sessionOptions } from '../../lib/session'
-
-
 export const config = {
   api: {
     bodyParser: false,
@@ -26,4 +22,4 @@ async function socketRoute(req: NextApiRequest, res: NextApiResponseServerIO) {
   res.end();
 };
 
-export default withIronSessionApiRoute(socketRoute as NextApiHandler, sessionOptions)
+export default socketRoute;

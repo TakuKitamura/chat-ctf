@@ -1,6 +1,6 @@
-import type { IronSessionOptions } from 'iron-session'
+import type { SessionOptions } from 'iron-session'
 
-export const sessionOptions: IronSessionOptions = {
+export const sessionOptions: SessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: 'web-ctf',
   cookieOptions: {
@@ -8,8 +8,6 @@ export const sessionOptions: IronSessionOptions = {
   },
 }
 
-declare module 'iron-session' {
-  interface IronSessionData {
-    user: {userID: string, iconURL: string}
-  }
+export interface IronSessionData {
+  user: {userID: string, iconURL: string}
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getIronSession } from "iron-session/edge";
+import { getIronSession } from "iron-session";
+import { sessionOptions, IronSessionData } from 'lib/session'
 
 export const middleware = async (req: NextRequest) => {
   const url = req.nextUrl.pathname
@@ -9,13 +10,7 @@ export const middleware = async (req: NextRequest) => {
     return res
   }
 
-  const session = await getIronSession(req, res, {
-    cookieName: "web-ctf",
-    password: process.env.SECRET_COOKIE_PASSWORD as string ,
-    cookieOptions: {
-      secure: process.env.NODE_ENV === "production",
-    },
-  });
+  const session = await getIronSession<IronSessionData>(req, res, sessionOptions);
 
   const { user } = session;
 

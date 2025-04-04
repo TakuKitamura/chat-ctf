@@ -26,7 +26,7 @@ export const botResponse = async (
     req: NextApiRequest,
     roomID: number,
     message: string,
-    file: File
+    file: File | undefined
 ) => {
     try {
         const botHandler = (await import(`./bots/bot${roomID}`)).default;

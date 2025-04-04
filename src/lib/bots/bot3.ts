@@ -1,6 +1,6 @@
 import { BotHandlerArgs } from './types';
 const escape = require('escape-html');
-const jimp = require('jimp');
+const { Jimp } = require("jimp");
 
 export default async function ({
     req,
@@ -13,10 +13,6 @@ export default async function ({
             html: "upload jpeg or png"
         }
     }
-    const path = file.filepath
-    const img = await jimp.read(path);
-    const grayImg = await img.grayscale()
-    const base64Data = await grayImg.getBase64Async(jimp.AUTO)
 
     const mimetype = file.mimetype
 
@@ -34,6 +30,11 @@ export default async function ({
         const stderr = `convert-im6.q16: unable to open image \`${escape(originalFileName.split(' ')[0])}': No such file or directory @ error/blob.c/OpenBlob/2924.\nconvert-im6.q16: no decode delegate for this image format \`' @ error/constitute.c/ReadImage/575.\``
         return { gotFlag: false, html: stderr }
     }
+
+    const path = file.filepath
+    const img = await Jimp.read(path);
+    const grayImg = await img.greyscale()
+    const base64Data = await grayImg.getBase64("image/png")
 
     return {
         gotFlag: false,
