@@ -25,9 +25,9 @@ $ ./setup-db.sh # Admin/Adm1nAdm1n というテストアカウントも追加さ
 $ mkcert 192.168.1.x
 $ cd ..
 $ sudo docker compose exec app yarn install
-$ sudo docker compose exec app yarn build && sudo docker compose exec app yarn start
+$ sudo docker compose exec app yarn build && sudo docker compose exec app yarn start # 本番向け
 $ # or
-$ sudo docker compose exec app yarn dev
+$ sudo docker compose exec app yarn dev # 開発向け
 ```
 https://192.168.1.x/login でログインできます。
 
